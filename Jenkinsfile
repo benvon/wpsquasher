@@ -1,11 +1,11 @@
 node {
     try {
-//      ws(getWorkspace()){
         stage ('Code Checkout') {
-           checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+          deleteDir()
+          checkout([$class: 'GitSCM', branches: [[name: '*/master']],
               userRemoteConfigs: [[url: 'git@github.com:benvon/wpsquasher.git',
                                  credentialsId: 'benvon_net_jenkins_ssh']]
-           ])
+          ])
         }
         stage ('Fetch WP archive') {
           sh "curl -O https://wordpress.org/latest.tar.gz"
@@ -20,7 +20,6 @@ node {
             sh "mksquashfs wordpress/ wordpress-autobuild-${BUILD_NUMBER}.squash -force-uid 5001 -force-gid 5001"
       	}
         currentBuild.result = 'SUCCESS'
-//      }
     } catch (err) {
         currentBuild.result = 'FAILED'
         throw err
