@@ -1,5 +1,6 @@
 node {
     try {
+        slackSend (color: '#FFFF00', message: 'Starting wpsquash job')
         stage ('Code Checkout') {
           deleteDir()
           checkout([$class: 'GitSCM', branches: [[name: '*/master']],
@@ -23,8 +24,10 @@ node {
           sh "scp wordpress-autobuild-${BUILD_NUMBER}.squash ${IMG_HOST}:/data/images/${SITE}/"
           sh "ssh ${IMG_HOST} 'ln -sf /data/images/${SITE}/wordpress-autobuild-${BUILD_NUMBER}.squash /data/images/${SITE}/wp_squash.latest'"
         }
+        slackSend (color: '#00FF00', message: 'wpsquaser success!')
         currentBuild.result = 'SUCCESS'
     } catch (err) {
+        slackSend (color: '#FF0000', message: 'wpsquaser FAILED!!!')
         currentBuild.result = 'FAILED'
         throw err
     }
