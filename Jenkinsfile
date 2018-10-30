@@ -23,8 +23,8 @@ node {
             sh "mksquashfs wordpress/ wordpress-autobuild-${BUILD_NUMBER}.squash -force-uid 5001 -force-gid 5001"
       	}
         stage ('Upload squash to repo') {
-          sh "scp wordpress-autobuild-${BUILD_NUMBER}.squash ${IMG_HOST}:/data/images/${SITE}/"
-          sh "ssh ${IMG_HOST} 'ln -sf /data/images/${SITE}/wordpress-autobuild-${BUILD_NUMBER}.squash /data/images/${SITE}/wp_squash.latest'"
+          sh "scp -o StrictHostKeyChecking=no wordpress-autobuild-${BUILD_NUMBER}.squash ${IMG_HOST}:/data/images/${SITE}/"
+          sh "ssh -o StrictHostKeyChecking=no ${IMG_HOST} 'ln -sf /data/images/${SITE}/wordpress-autobuild-${BUILD_NUMBER}.squash /data/images/${SITE}/wp_squash.latest'"
         }
         slackSend (color: '#00FF00', message: 'wpsquaser success!')
         currentBuild.result = 'SUCCESS'
