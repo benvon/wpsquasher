@@ -1,8 +1,10 @@
 node {
     try {
         slackSend (color: '#FFFF00', message: 'Starting wpsquash job')
+        stage ('Workdir cleanup'){
+          step([$class: 'WsCleanup'])
+        }
         stage ('Code Checkout') {
-          deleteDir()
           checkout([$class: 'GitSCM', branches: [[name: '*/master']],
               userRemoteConfigs: [[url: 'git@github.com:benvon/wpsquasher.git',
                                  credentialsId: 'benvon_net_jenkins_ssh']]
