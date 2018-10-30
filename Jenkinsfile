@@ -1,4 +1,4 @@
-node ('Jenkins') {
+node ('master') {
     try {
         slackSend (color: '#FFFF00', message: 'Starting wpsquash job')
         stage ('Workdir cleanup'){
