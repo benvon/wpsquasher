@@ -15,15 +15,15 @@ node ('master') {
         stage ('Unroll and prep WP dir') {
           sh "tar xfvz latest.tar.gz"
           sh "rm -rf wordpress/wp-content"
-          sh "ln -s /data/app/${SITE}/wp-content wordpress/wp-content"
-          sh "ln -s /data/config/${SITE}/wp-config.php wordpress/wp-config.php"
+          sh "ln -s /data/app/${params.SITE}/wp-content wordpress/wp-content"
+          sh "ln -s /data/config/${params.SITE}/wp-config.php wordpress/wp-config.php"
         }
       	stage ('Create squash') {
             sh "mksquashfs wordpress/ wordpress-autobuild-${BUILD_NUMBER}.squash -force-uid 5001 -force-gid 5001"
       	}
         stage ('Upload squash to repo') {
-          sh "scp -o StrictHostKeyChecking=no wordpress-autobuild-${BUILD_NUMBER}.squash ${IMG_HOST}:/data/images/${SITE}/"
-          sh "ssh -o StrictHostKeyChecking=no ${IMG_HOST} 'ln -sf /data/images/${SITE}/wordpress-autobuild-${BUILD_NUMBER}.squash /data/images/${SITE}/wp_squash.latest'"
+          sh "scp -o StrictHostKeyChecking=no wordpress-autobuild-${BUILD_NUMBER}.squash ${params.IMG_HOST}:/data/images/${params.SITE}/"
+          sh "ssh -o StrictHostKeyChecking=no ${params.IMG_HOST} 'ln -sf /data/images/${params.SITE}/wordpress-autobuild-${BUILD_NUMBER}.squash /data/images/${params.SITE}/wp_squash.latest'"
         }
         slackSend (color: '#00FF00', message: 'wpsquaser success!')
         currentBuild.result = 'SUCCESS'
