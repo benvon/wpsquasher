@@ -4,12 +4,14 @@ node ('master') {
         stage ('Workdir cleanup'){
           step([$class: 'WsCleanup'])
         }
+        /*
         stage ('Code Checkout') {
           checkout([$class: 'GitSCM', branches: [[name: '*/master']],
               userRemoteConfigs: [[url: 'git@github.com:benvon/wpsquasher.git',
                                  credentialsId: 'benvon_net_jenkins_ssh']]
           ])
         }
+        */
         stage ('Fetch WP archive') {
           sh "curl -O https://wordpress.org/latest.tar.gz"
         }
