@@ -19,6 +19,11 @@ pipeline {
        slackSend (color: '#FFFF00', message: 'Starting wpsquash job')
      }
    }
+   stage ('Cleanup') {
+     steps {
+       sh "rm -rf ./*"
+     }
+   }
    stage ('Fetch WP archive') {
      steps {
        downloadWP()
