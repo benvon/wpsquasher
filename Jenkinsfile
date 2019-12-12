@@ -1,4 +1,4 @@
-node ('master') {
+node ('aesop') {
     parameters {
       string(name: 'SITE', description: 'wordpress hostname for site being squashed', defaultValue: 'blog.benvon.net')
       string(name: 'IMG_HOST', description: 'where we will scp the file, username@host.tld', defaultValue: 'jenkins@192.168.1.12')
