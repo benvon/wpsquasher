@@ -31,7 +31,7 @@ pipeline {
    }
    stage ('Make Squash') {
      steps {
-       makeSquasFS()
+       makeSquashFS()
      }        
    }
    stage ('Upload Squash') {
